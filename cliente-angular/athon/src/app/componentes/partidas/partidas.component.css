@@ -1,0 +1,93 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,,800,900);  
+.subtable {
+    padding: 0 !important;
+    margin: 0 !important;}
+ 
+.first-table {
+    text-align: center;}
+td.first-table {    
+    font-size: small;} 
+
+
+.left-table {
+    text-align: left;}
+td.left-table {    
+    font-size: normal;
+    padding: 0px;
+    border: 0;}  
+
+.center-table {
+    text-align: center; 
+ }
+td.center-table td{    
+    font-size: small;
+    font-style: bold;}  
+td.center-table a {    
+    color: #FFFFFF;
+    font-style: bold;}
+
+.right-table{
+    text-align: right;} 
+td.right-table td{    
+    font-size: normal;
+    padding: 0;
+    border: 0;} 
+
+.last-table{
+    text-align: left;} 
+td.last-table {    
+    font-size: small;}  
+td.last-table a {    
+    color: #FCC729;
+    font-style: bold;}   
+
+img.time_logo {
+    height: 18px;
+    background: transparent no-repeat center;
+    background-size: cover;}
+
+img.time_mvp {
+    height: 16px;
+    background: transparent no-repeat center;
+    background-size: cover;}
+
+img.arena_logo {
+    height: 16px;
+    background: transparent no-repeat center;
+    background-size: cover;}
+img.arena_pin {
+    height: 22px;
+    background: transparent no-repeat center;
+    background-size: cover;}  
+
+img.trofeu_logo_sm {
+    height: 18px;
+    background: transparent no-repeat center;
+    background-size: cover;}
+
+img.trofeu_logo_md {
+    height: 26px;
+    background: transparent no-repeat center;
+    background-size: cover;}
+
+img.arma_logo_sm {
+    height: 18px;
+    background: transparent no-repeat center;
+    background-size: cover;}
+
+img.arma_logo_md {
+    height: 28px;
+    background: transparent no-repeat center;
+    background-size: cover;}  
+
+.display-4 {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    color: transparent;
+    font-size: 80px;
+    background: url("src\assets\game\wallpaper.jpg") repeat;
+    background-position: 40% 60%;
+    background-clip: text;    
+    text-align: left;
+    line-height: 90px;
+    letter-spacing: -8px;}

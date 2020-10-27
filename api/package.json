@@ -1,0 +1,21 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "avaliacao Athon",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js --ignore *.marko.js"
+  },
+  "author": "Rafael Cabral",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "4.16.3",
+    "marko": "^4.23.9",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "1.18.4"
+  }
+}

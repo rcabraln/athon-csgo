@@ -1,0 +1,2 @@
+cd "C:\Program Files\MySQL\MySQL Server 8.0\bin"
+mysqldump.exe --user=mysql --password=#abc$878da454 --host=localhost --port=3306 --result-file="C:\Users\Lights\PycharmProjects\Mapeamentos\athon\db\dump\athon_dump.slq" --databases "athon"

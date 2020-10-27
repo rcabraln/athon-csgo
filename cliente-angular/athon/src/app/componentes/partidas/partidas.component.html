@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Campeonato CSGo Brasil</title>
+</head>
+<body>
+    <div class="row">     
+        <div class="jumbotron">
+            <h4 class="display-4">Grande Campeonato de [CSGo 2020]</h4>
+
+            <p class="lead">Os 128 maiores times de CSGo foram sorteados para jogarem um campeonato no presencial no Brasil. E para isso ter acontecido, também foram sorteadas as maiores arenas do Brasil, que foram palco dos jogos.</p>
+            <hr class="my-4">
+            <p>Após mêses de confrontos eliminatórios diretos, com sorteio entre cada uma das fases, o campeão foi a  
+                <img src="/assets/game/trofeu.png"  alt="" title= "Campeão" class='trofeu_logo_md'/>                
+                <a href={{campeao?.href}} target="_blank">{{campeao?.nome}}</a>                
+                <img src={{campeao?.logo_angular}}  alt="" class='time_logo'/>.
+               Todas as informações entre os participantes, resultados, locais de jogos e público geraram uma rica base de dados, que foi organizada e disponibilizada em tempo real, para que os fãs do evento pudessem acompanhar cada detalhe de tudo que aconteceu. 
+            </p>          
+        </div>        
+    </div>
+    <div class="row">     
+        <div class="col">
+            <h3>Tabela geral das partidas do torneio</h3>
+            <table class="table table-responsive subtable">            
+                <caption>Partidas do torneio, por odem de fase (quem mais avançou) e classificação geral</caption>
+                <thead>                
+                    <tr>
+                        <th class="table-dark first-table" scope="col">Partida</th>
+                        <th class="bg-success left-table" scope="col">Time Vencedor </th>
+                        <th class="bg-success left-table" scope="col">MVP do Time </th>            
+                        <th class="table-dark center-table" scope="col">Resultado</th>
+                        <th class="bg-warning right-table" scope="col">MVP do Time </th>
+                        <th class="bg-warning right-table" scope="col">Time Perdedor (eliminado)</th>
+                        <th class="table-secondary last-table" scope="col">Arena</th>
+                        <th class="table-secondary last-table" scope="col">
+                            <img src="/assets/geo/pin_small.png"  alt="" class='arena_pin'/>
+                        </th>            
+                        <th class="table-secondary last-table" scope="col">capacidade</th>            
+                        <th class="table-secondary last-table" scope="col">público</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let partida of partidas | paginate: {id: 'listing_pagination_partidas', itemsPerPage: partidasPerPage, currentPage: partidasPage, totalItems: partidasRecords }">
+                        <td class="table-secondary first-table" scope="col">
+                            {{partida.data}} {{partida.fase}}ª Etapa
+                        </td>
+
+                        <td class="table-secondary left-table" scope="col">                        
+                            <img *ngIf="campeao?.time_id == partida.time_id_vencedor" src="/assets/game/trofeu.png"  alt="" title= "Campeão" class='trofeu_logo_sm'/>
+                            <img src={{partida.logo_vencedor}}  alt="" class='time_logo'/>                        
+                            <a href={{partida.href_vencedor}} target="_blank">{{partida.time_vencedor}}</a>
+                        </td>
+                        <td class="table-secondary left-table" scope="col">
+                            <h6 title="{{partida.mvp_v_nome}}">
+                                <img src={{partida.mvp_v_bandeira}}  alt="" class='time_mvp'/>
+                                {{partida.mvp_v_apelido}}
+                            </h6>
+                        </td>
+                        <td class="table-dark center-table" scope="col">
+                            <a href="partida/id:{{partida.partida_id}}" [routerLink]="['partida', partida.partida_id]" >
+                                [{{partida.Rounds_vencedor}}] x [{{partida.Rounds_perdedor}}]</a>                
+                        </td>
+                        <td class="table-secondary right-table" scope="col">
+                            <h6 title="{{partida.mvp_p_nome}}">{{partida.mvp_p_apelido}}
+                                <img src={{partida.mvp_p_bandeira}}  alt="" class='time_mvp'/>                    
+                            </h6>
+                        </td>
+                        <td class="table-secondary right-table" scope="col">
+                            <a href={{partida.href_perdedor}} target="_blank">{{partida.time_perdedor}}</a>
+                            <img src={{partida.logo_perdedor}}  alt="" class='time_logo'/>
+                        </td>
+                        <td class="table-dark last-table" scope="col-1">
+                            <img src={{partida.bandeira_arena}}  alt="" class='arena_logo'/>
+                            <a href={{partida.href_arena}} target="_blank"> {{partida.arena}}</a>
+                        </td>
+                        <td class="table-dark last-table" scope="col">
+                            <a href="http://www.google.com/maps/place/{{partida.lat}},{{partida.lng}}" target="_blank">local</a>
+                        </td>
+                        <td class="table-dark last-table" scope="col">{{partida.capacidade}}</td>
+                        <td class="table-dark last-table" scope="col">{{partida.publico}}</td>            
+                    </tr>
+                </tbody>    
+            </table>
+            <div>
+                <pagination-controls id="listing_pagination_partidas" maxSize="5" directionLinks="true" (pageChange)="partidasPage = $event"></pagination-controls>
+            </div>        
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <h3>Ranking dos Jogadores</h3>
+            <table class="table table-responsive subtable">            
+                <caption *ngIf="jogadoresPorTime">Jogadores melhor classificados pelas vitórias do time, pontuação (3 Pontos por kill, +2 se for HS) durante a partida e quantidade de HS</caption>
+                <caption *ngIf="!jogadoresPorTime">Jogadores melhor classificados pela pontuação (3 Pontos por kill, +2 se for HS) durante a partida e quantidade de HS</caption>
+                <thead>
+                    <tr>
+                        <th *ngIf="jogadoresPorTime" class="table-secondary first-table" (click)="jogadoresPorTime = !jogadoresPorTime; getJogadores()" scope="col-6" title="Clique para modificar o critério de classificação">Jogador
+                            <button type="button" class="btn btn-warning">Por Vitórias e Pontos</button>
+                        </th>
+                        <th *ngIf="!jogadoresPorTime" class="table-secondary first-table" (click)="jogadoresPorTime = !jogadoresPorTime; getJogadores()" scope="col-6" title="Clique para modificar o critério de classificação">Jogador
+                            <button type="button" class="btn btn-warning">Por Pontos e HSs</button>
+                        </th>                    
+                        <th class="table-dark first-table" scope="col">Time</th>                        
+                        <th class="table-dark left-table" scope="col-2">Pontos/HSs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let jogador of jogadores | paginate: {id: 'listing_pagination_jogadores', itemsPerPage: jogadoresPerPage, currentPage: jogadoresPage, totalItems: jogadoresRecords }">
+                        <td class="table-secondary left-table" scope="col-6">
+                            <h6 title="{{jogador.apelid}}">
+                                <img src={{jogador.bandeira_angular}}  alt="" class='time_mvp'/>
+                                {{jogador.nome}}({{jogador.apelido}})
+                            </h6>
+                        </td>
+                        <td class="table-dark last-table" scope="col">
+                            <img *ngIf="campeao?.time_id == jogador.time_id" src="/assets/game/trofeu.png"  alt="" title= "Campeão" class='trofeu_logo_sm'/>
+                            <img src={{jogador.logo_angular}}  alt="" class='time_logo'/>                        
+                            <a href={{jogador.href}} target="_blank">{{jogador.nome_time}}</a>
+                        </td>
+                        <td class="table-dark left-table" scope="col-2">
+                            {{jogador.total}}/{{jogador.HSjogador}}
+                        </td>                                                
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2">
+            <h3>Times</h3>
+            <table class="table table-responsive subtable">            
+                <caption>Times Organizados pela sua classificação na tabela, por suas vitórias e pontos feitos no campeonato</caption>
+                <thead>
+                    <tr>
+                        <th class="table-dark left-table" scope="col">Time participante</th>
+                        <th class="table-dark left-table" scope="col-2">Pontos/HSs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let time of times| paginate: {id: 'listing_pagination_times', itemsPerPage: timesPerPage, currentPage: timesPage, totalItems: timesRecords }">
+                        <td class="table-dark last-table" scope="col">
+                            <img *ngIf="campeao?.time_id == time.time_id" src="/assets/game/trofeu.png"  alt="" title= "Campeão" class='trofeu_logo_sm'/>
+                            <img src={{time.logo_angular}}  alt="" class='time_logo'/>                        
+                            <a href={{time.href}} target="_blank">{{time.nome}}</a>
+                        </td>
+                        <td class="table-dark left-table" scope="col-2">
+                            {{time.total}}/{{time.HSEquipe}}
+                        </td>                        
+                    </tr>
+                </tbody>
+            </table>                
+        </div>
+        <div class="col-2">        
+            <h3>Armas</h3>
+            <table class="table table-responsive subtable">            
+                <caption>Armas organizadas pela quantidade total de mortes, total de HS e nome</caption>                
+                <thead>
+                    <tr>
+                        <th class="table-dark left-table" scope="col-8">Arma</th>
+                        <th class="table-dark left-table" scope="col">Kills</th>                    
+                        <th class="table-dark left-table" scope="col">HSs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let arma of armas | paginate: {id: 'listing_pagination_armas', itemsPerPage: armasPerPage, currentPage: armasPage, totalItems: armasRecords }">
+                        <td class="table-dark last-table" scope="col-8">                            
+                            <img src={{arma.icone_angular}}  alt=" " class='arma_logo_sm'/>
+                            {{arma.nome}}
+                        </td>
+                        <td class="table-dark left-table" scope="col">{{arma.total}}</td>
+                        <td class="table-dark left-table" scope="col">{{arma.HSArma}}</td>            
+                    </tr>
+                </tbody>
+            </table>        
+        </div>
+        <div class="col-4">
+            <h3>Ranking de Público</h3>
+            <table class="table table-responsive subtable">            
+                <caption>Arenas organizadas pelo público presente nos dias de evento</caption>                
+                <thead>
+                    <tr>
+                        <th class="table-dark left-table" scope="col">Arena</th>                        
+                        <th class="table-dark left-table" scope="col">Capacidade</th>
+                        <th class="table-dark left-table" scope="col">Público</th>                    
+                        <th class="table-dark left-table" scope="col">
+                            <img src="/assets/geo/pin_small.png"  alt="" class='arena_pin'/>                            
+                        </th>
+                        <th class="table-dark left-table" scope="col">Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let arena of arenas | paginate: {id: 'listing_pagination_arenas', itemsPerPage: arenasPerPage, currentPage: arenasPage, totalItems: arenasRecords }">
+                        <td class="table-dark last-table" scope="col">
+                            <img src={{arena.bandeira_angular}}  alt="" class='arena_logo'/>
+                            <a href={{arena.href}} target="_blank"> {{arena.arena}}</a>
+                        </td>                        
+                        <td class="table-dark last-table" scope="col">{{arena.capacidade}}</td>
+                        <td class="table-dark last-table" scope="col">{{arena.publico}}</td>
+                        <td class="table-dark last-table" scope="col">
+                            <a href="http://www.google.com/maps/place/{{arena.lat}},{{arena.lng}}" target="_blank">local</a>
+                        </td>
+                        <td class="table-dark last-table" scope="col">{{arena.data}}</td>                        
+                    </tr>
+                </tbody>
+            </table>
+        </div>        
+    </div>    
+    <div class="row">
+        <div class="col-4">
+            <div>
+                <pagination-controls id="listing_pagination_jogadores" maxSize="5" directionLinks="true" (pageChange)="jogadoresPage = $event"></pagination-controls>
+            </div>            
+        </div>
+        <div class="col-2">    
+            <div>
+                <pagination-controls id="listing_pagination_times" maxSize="5" directionLinks="true" (pageChange)="timesPage = $event"></pagination-controls>
+            </div>            
+        </div>
+        <div class="col-2">    
+            <div>
+                <pagination-controls id="listing_pagination_armas" maxSize="5" directionLinks="true" (pageChange)="armasPage = $event"></pagination-controls>
+            </div>            
+        </div>
+        <div class="col-4">    
+            <div>
+                <pagination-controls id="listing_pagination_arenas" maxSize="5" directionLinks="true" (pageChange)="arenasPage = $event"></pagination-controls>
+            </div>            
+        </div>                        
+    </div>
+    <div class="row">
+        
+    </div>    
+</body>
+<app-analises></app-analises>
+</html>
+
