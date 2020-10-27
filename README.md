@@ -12,6 +12,13 @@ Objetivo: Para que as aplicações funcionem corretamente, é necessário que o 
 |  Python Crawler    | Configurar o arquivo **athon/db/conexoes/mySQL.py** conforme as configurações do ambiente local                     |
 |  Node API          | Configurar o arquivo **athon/api/src/config/conexao.js** conforme as configurações do ambiente local                |	
 
+**Modelo entidade e relacionamentos**
+```diff
+! mais informações em athon\documentacao\db
+```
+![alt text](https://uploaddeimagens.com.br/images/002/937/297/full/2020-10-27_15-16.jpg?1603819030)
+
+
  # 2) Coleta de Dados Básicos (Crawler - Python):
 Objetivo: usando como tecnologias Python e BeautifulSoup, coletar informações dos principais times de CSGo atuais, bem como imagens de logos e bandeiras. Além disso dados de georreferenciamento que serão usados para marcar os locais das partidas.
 ```diff
