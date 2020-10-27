@@ -250,7 +250,16 @@ class Charts {
     * Audiência x data
     */
     listaAudienciaData(res) {
-        const sql = ` select "Requisição Inativa" from armas `
+        const sql = ` select DATE_FORMAT(pa.data_partida, '%Y-%m-%d') as "x", pa.publico as value, partida_id as id, r.nome as regiao, e.nome as "y",
+                        concat(tv.nome, '(vencedor) x ', tp.nome,'(perdedor). Arena ', a.nome, ', pacidade de ',a.capacidade, ' pessoas' ) as title,
+                        r.color
+                        from partidas pa
+                             inner join arenas a  on (a.arena_id = pa.arena_id)
+                             inner join estados e  on (e.estado_id = a.estado_id)
+                             inner join regioes r  on (r.regiao_id = e.regiao_id)
+                             inner join times tv  on (tv.time_id = pa.time_id_vencedor)
+                             inner join times tp  on (tp.time_id = pa.time_id_perdedor)
+                      order by data_partida `
         conexao.query(sql, (erro, resultados) => {
             if(erro) {
                 res.status(400).json(erro)
